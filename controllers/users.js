@@ -44,9 +44,41 @@ const createUser = async (req, res) => {
   } catch(err) {
     console.log(err)
   }
-
-
 }
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).send('Please provide an email and password')
+      return;
+    }
+
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      res.status(401).send('Invalid credentials')
+      return;
+    }
+
+    const doesPassMatch = await user.matchPassword(password);
+    console.log(doesPassMatch)
+
+    if (!doesPassMatch) {
+      res.status(401).send('Invalid credentials')
+      return;
+    }
+
+    const token = user.getSignedJwtToken();
+
+    res.json({ success: true, token })
+
+  } catch(err) {
+    console.log(err)
+  }
+}
+
 
 const deleteUser = async (req, res) => {
   try {
@@ -88,5 +120,6 @@ export {
   getUser,
   createUser,
   deleteUser,
-  editUser
+  editUser,
+  login
 }

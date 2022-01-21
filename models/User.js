@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const { Schema } = mongoose;
 
@@ -36,6 +37,9 @@ UserSchema.methods.matchPassword = async function(enteredPass) {
   return await bcrypt.compare(enteredPass, this.password)
 }
 
+UserSchema.methods.getSignedJwtToken = function() {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET)
+}
 // User => users
 // Pet => pets
 const UserModel = mongoose.model('User', UserSchema)

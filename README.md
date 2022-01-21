@@ -36,4 +36,11 @@ Who would have thank.
 
 `curl -d '{"name": "fey", "email": "fey@pokemontrainer.com", "password": "iamtrainerfey" }' -H "Content-Type: application/json" -X POST http://localhost:3000/auth/register`
 
-http://localhost:3000/register
+### Login
+
+`curl -d '{"email": "fey@pokemontrainer.com", "password": "iamtrainerfey"}' -H "Content-Type: application/json" -X POST http://localhost:3000/auth/login`
+
+
+### Get protected route
+
+`curl -H "Authorization: Bearer tokenhere" http://localhost:3000/api/users`

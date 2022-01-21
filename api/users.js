@@ -8,11 +8,13 @@ import {
   editUser
 } from '../controllers/users.js';
 
+import protect from '../middleware/auth.js';
+
 const api = express.Router();
 
 api
   .route('/')
-  .get(getUsers)
+  .get(protect, getUsers)
   .post(createUser)
 
 api
